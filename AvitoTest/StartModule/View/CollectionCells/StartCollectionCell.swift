@@ -15,7 +15,6 @@ final class StartCollectionCell: UICollectionViewCell {
     private let iconImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .blue
         let img = UIImage()
         image.image = img
         
@@ -93,7 +92,8 @@ final class StartCollectionCell: UICollectionViewCell {
                 equalTo: contentView.topAnchor,
                 constant: 8),
             titleLabel.leadingAnchor.constraint(
-                equalTo: iconImage.trailingAnchor),
+                equalTo: iconImage.trailingAnchor,
+                constant: 8),
             titleLabel.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor)
         ])
@@ -105,7 +105,7 @@ final class StartCollectionCell: UICollectionViewCell {
                 equalTo: titleLabel.bottomAnchor,
                 constant: 8),
             descriptionLabel.leadingAnchor.constraint(
-                equalTo: iconImage.trailingAnchor),
+                equalTo: titleLabel.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor)
         ])
@@ -117,7 +117,7 @@ final class StartCollectionCell: UICollectionViewCell {
                 equalTo: descriptionLabel.bottomAnchor,
                 constant: 8),
             priceLabel.leadingAnchor.constraint(
-                equalTo: iconImage.trailingAnchor),
+                equalTo: titleLabel.leadingAnchor),
             priceLabel.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor),
             priceLabel.bottomAnchor.constraint(
@@ -129,9 +129,11 @@ final class StartCollectionCell: UICollectionViewCell {
     //MARK: - config
     func config(title: String,
                 description: String,
-                price: String) {
+                price: String,
+                image: UIImage) {
         titleLabel.text = title
         descriptionLabel.text = description
         priceLabel.text = price
+        iconImage.image = image
     }
 }

@@ -12,19 +12,21 @@ protocol StartViewProtocol: AnyObject {
     func showLoadingIndicator()
     func hideLoadingIndicator()
     func displayError(error: String)
-    func displayAvito(avito: AvitoModel)
+    func displayAvito(avito: AvitoModel,
+                      imageArray: [Data])
 }
 
 final class StartViewController: UIViewController,
                                  StartViewProtocol {
     var presenter: StartPresenterProtocol!
-    var avitoModel: AvitoModel? {
+    private var avitoModel: AvitoModel? {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
     }
+    private var imageArray = [UIImage]()
     
     //MARK: - collectionView
     private lazy var collectionView: UICollectionView = {
@@ -68,7 +70,14 @@ final class StartViewController: UIViewController,
     }
     
     //MARK: - displayAvito
-    func displayAvito(avito: AvitoModel) {
+    func displayAvito(avito: AvitoModel, imageArray: [Data]) {
+        for item in imageArray {
+            if let image = UIImage(data: item) {
+                self.imageArray.append(image)
+            } else {
+                self.imageArray.append(UIImage(systemName: "xmark")!)
+            }
+        }
         DispatchQueue.main.async {
             self.avitoModel = avito
         }
@@ -90,9 +99,6 @@ final class StartViewController: UIViewController,
             collectionView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        
-        
     }
     
     //MARK: - createLayout
@@ -148,10 +154,12 @@ extension StartViewController: UICollectionViewDelegate,
         let title = avitoModel?.result.list[indexPath.row].title ?? ""
         let description = avitoModel?.result.list[indexPath.row].description ?? ""
         let price = avitoModel?.result.list[indexPath.row].price ?? ""
+        let image = imageArray[indexPath.row]
         
         cell.config(title: title,
                     description: description,
-                    price: price)
+                    price: price,
+                    image: image)
         
         return cell
     }

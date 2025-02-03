@@ -11,7 +11,8 @@ import Foundation
 protocol StartPresenterProtocol: AnyObject {
     func loadAvito()
     func didFetchError(error: String)
-    func didFetchAvitoModel(avito: AvitoModel)
+    func didFetchAvitoModel(avito: AvitoModel,
+                            imageArray: [Data])
 }
 
 final class StartPresenter: StartPresenterProtocol {
@@ -31,9 +32,11 @@ final class StartPresenter: StartPresenterProtocol {
     }
     
     //MARK: - didFetchAvitoModel
-    func didFetchAvitoModel(avito: AvitoModel) {
+    func didFetchAvitoModel(avito: AvitoModel,
+                            imageArray: [Data]) {
         view.hideLoadingIndicator()
-        view.displayAvito(avito: avito)
+        view.displayAvito(avito: avito, imageArray: imageArray)
     }
+
 }
 

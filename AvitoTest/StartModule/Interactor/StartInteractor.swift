@@ -15,16 +15,31 @@ protocol StartInteractorProtocol: AnyObject {
 final class StartInteractor: StartInteractorProtocol {
     weak var presenter: StartPresenterProtocol!
     var netwrokManager: NetworkManagerProtocol!
-    var avitoModel: AvitoModel?
+    var imagesArray = [String]()
     
     //MARK: - fetchAvitoModel
     func fetchAvitoModel() {
-        netwrokManager.fetchAvito { [weak self] result in
+        netwrokManager.fetchInfo { [weak self] result in
             switch result {
             case .failure(let error):
                 self?.presenter.didFetchError(error: error.localizedDescription)
             case .success(let model):
-                self?.presenter.didFetchAvitoModel(avito: model)
+                for item in model.result.list {
+                    self?.imagesArray.append(item.icon.the52X52)
+                }
+                self?.fetchImages(model: model)
+            }
+        }
+    }
+    
+    //MARK: - fetchImages
+    private func fetchImages(model: AvitoModel) {
+        netwrokManager.fetchImage(urlString: imagesArray) { [weak self] result in
+            switch result {
+            case .success(let images):
+                self?.presenter.didFetchAvitoModel(avito: model, imageArray: images)
+            case .failure(let error):
+                self?.presenter.didFetchError(error: error.localizedDescription)
             }
         }
     }

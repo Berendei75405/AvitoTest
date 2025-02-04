@@ -34,9 +34,10 @@ final class StartPresenter: StartPresenterProtocol {
     //MARK: - didFetchAvitoModel
     func didFetchAvitoModel(avito: AvitoModel,
                             imageArray: [Data]) {
-        view.hideLoadingIndicator()
-        view.displayAvito(avito: avito, imageArray: imageArray)
+        self.view.hideLoadingIndicator()
+        self.view.hideError()
+        self.view.displayAvito(avito: avito, imageArray: imageArray)
     }
-
+    
 }
 

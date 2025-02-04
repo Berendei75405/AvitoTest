@@ -22,12 +22,16 @@ final class StartInteractor: StartInteractorProtocol {
         netwrokManager.fetchInfo { [weak self] result in
             switch result {
             case .failure(let error):
-                self?.presenter.didFetchError(error: error.localizedDescription)
-            case .success(let model):
-                for item in model.result.list {
-                    self?.imagesArray.append(item.icon.the52X52)
+                DispatchQueue.main.async {
+                    self?.presenter.didFetchError(error: error.localizedDescription)
                 }
-                self?.fetchImages(model: model)
+            case .success(let model):
+                DispatchQueue.main.async {
+                    for item in model.result.list {
+                        self?.imagesArray.append(item.icon.the52X52)
+                    }
+                    self?.fetchImages(model: model)
+                }
             }
         }
     }
@@ -37,9 +41,13 @@ final class StartInteractor: StartInteractorProtocol {
         netwrokManager.fetchImage(urlString: imagesArray) { [weak self] result in
             switch result {
             case .success(let images):
-                self?.presenter.didFetchAvitoModel(avito: model, imageArray: images)
+                DispatchQueue.main.async {
+                    self?.presenter.didFetchAvitoModel(avito: model, imageArray: images)
+                }
             case .failure(let error):
-                self?.presenter.didFetchError(error: error.localizedDescription)
+                DispatchQueue.main.async {                    
+                    self?.presenter.didFetchError(error: error.localizedDescription)
+                }
             }
         }
     }

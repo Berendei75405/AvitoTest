@@ -54,6 +54,16 @@ final class StartCollectionCell: UICollectionViewCell {
         return lab
     }()
     
+    //MARK: - selectedButton
+    private let selectedImageView: UIImageView = {
+        let img = UIImage(named: "success")
+        let image = UIImageView(image: img)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFit
+        
+        return image
+    }()
+    
     //init
     override init(frame: CGRect) {
         super .init(frame: frame)
@@ -85,6 +95,21 @@ final class StartCollectionCell: UICollectionViewCell {
                 equalToConstant: 52),
         ])
         
+        //selectedImageView constraints
+        contentView.addSubview(selectedImageView)
+        NSLayoutConstraint.activate([
+            selectedImageView.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: 16),
+            selectedImageView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -8),
+            selectedImageView.widthAnchor.constraint(
+                equalToConstant: 30),
+            selectedImageView.heightAnchor.constraint(
+                equalToConstant: 30)
+        ])
+        
         //titleLabel constraints
         contentView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -95,8 +120,10 @@ final class StartCollectionCell: UICollectionViewCell {
                 equalTo: iconImage.trailingAnchor,
                 constant: 8),
             titleLabel.trailingAnchor.constraint(
-                equalTo: contentView.trailingAnchor)
+                equalTo: selectedImageView.leadingAnchor,
+                constant: -8)
         ])
+        
         
         //descriptionLabel constraints
         contentView.addSubview(descriptionLabel)
@@ -107,7 +134,7 @@ final class StartCollectionCell: UICollectionViewCell {
             descriptionLabel.leadingAnchor.constraint(
                 equalTo: titleLabel.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(
-                equalTo: contentView.trailingAnchor)
+                equalTo: titleLabel.trailingAnchor)
         ])
         
         //priceLabel constraints
@@ -124,16 +151,20 @@ final class StartCollectionCell: UICollectionViewCell {
                 equalTo: contentView.bottomAnchor,
                 constant: -8)
         ])
+
+        
     }
     
     //MARK: - config
     func config(title: String,
                 description: String,
                 price: String,
-                image: UIImage) {
+                image: UIImage,
+                selected: Bool) {
         titleLabel.text = title
         descriptionLabel.text = description
         priceLabel.text = price
         iconImage.image = image
+        selectedImageView.isHidden = selected ? false : true
     }
 }

@@ -33,7 +33,6 @@ final class NetworkService: NetworkServiceProtocol {
         }
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
             //обработанная ошибка
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
